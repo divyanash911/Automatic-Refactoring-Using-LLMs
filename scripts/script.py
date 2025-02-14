@@ -103,7 +103,7 @@ def apply_refactorings_to_files(repo, files_updates: dict) -> str:
     :return: The name of the branch that was created.
     """
     # Create a new branch name based on the current timestamp.
-    branch_name = "llm-refactor"
+    branch_name = "llm-refactor-" + datetime.datetime.now().strftime("%Y%m%d%H%M%S")
     ref_name = "refs/heads/" + branch_name
 
     # Get the latest commit sha from the main branch.
