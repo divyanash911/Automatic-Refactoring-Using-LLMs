@@ -113,7 +113,7 @@ def apply_refactorings_to_files(repo, files_updates: dict) -> str:
     commit_message = "Apply LLM-suggested refactorings for selected files"
     # Update each file with the refactored content.
     for file_path, new_content in files_updates.items():
-        print(f"Updating file: {file_path}")
+        print(f"Updating file: {file_path} at repo: {repo.full_name}")
         # Retrieve the file from the new branch.
         file_obj = repo.get_contents(file_path, ref=branch_name)
         repo.update_file(
