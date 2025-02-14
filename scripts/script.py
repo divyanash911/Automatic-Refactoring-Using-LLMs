@@ -43,7 +43,7 @@ def get_repo() -> object:
     Returns a PyGithub Repository object using the provided environment variables.
     """
     token = os.environ.get("TOKEN")
-    repo_name = "divyanash911/Automatic-Refactoring-Using-LLMs"
+    repo_name = "divyanash911/project-1-team-14"
     if not token or not repo_name:
         raise Exception("TOKEN and REPOSITORY must be set as environment variables.")
     
@@ -100,7 +100,7 @@ def apply_refactorings_to_files(repo, files_updates: dict) -> str:
     :return: The name of the branch that was created.
     """
     # Create a new branch name based on the current timestamp.
-    branch_name = "llm-refactor-" + datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+    branch_name = "llm-refactor"
     ref_name = "refs/heads/" + branch_name
 
     # Get the latest commit sha from the main branch.
@@ -129,17 +129,32 @@ def apply_refactorings_to_files(repo, files_updates: dict) -> str:
 
 def create_pull_request(repo, branch_name: str, pr_body: str) -> str:
     """
-    Creates a pull request from the new branch into the main branch using the GitHub API.
+    Creates a pull request against the original repository if working on a fork.
     
-    :param branch_name: The head branch containing the changes.
-    :param pr_body: The description for the pull request.
+    If the repo is a fork, it creates a PR on the upstream repository (repo.parent)
+    using the fork's branch (with the head parameter formatted as "forkOwner:branchName").
+    
+    :param repo: The repository object (which may be your fork).
+    :param branch_name: The branch name where the changes are pushed.
+    :param pr_body: The pull request description.
     :return: The URL of the created pull request.
     """
+    # If working on a fork, use the parent (upstream) repository for the pull request.
+    if repo.fork and repo.parent:
+        target_repo = repo.parent
+        # The head branch must be specified in the format "username:branch".
+        head_branch = f"{repo.owner.login}:{branch_name}"
+    else:
+        target_repo = repo
+        head_branch = branch_name
+
     title = "LLM Refactoring: Automated Code Improvements"
-    base_branch = "main"
+    base_branch = "main"  # Change if your target branch is different
     print("Creating pull request on GitHub...")
-    pr = repo.create_pull(title=title, body=pr_body, head=branch_name, base=base_branch)
+    
+    pr = target_repo.create_pull(title=title, body=pr_body, head=head_branch, base=base_branch)
     return pr.html_url
+
 
 def main():
     try:
