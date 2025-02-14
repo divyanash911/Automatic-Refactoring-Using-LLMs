@@ -152,7 +152,7 @@ def create_pull_request(repo, branch_name: str, pr_body: str) -> str:
         head_branch = branch_name
 
     title = "LLM Refactoring: Automated Code Improvements"
-    base_branch = "main"  # Change if your target branch is different
+    base_branch = "master"  # Change if your target branch is different
     print("Creating pull request on GitHub...")
     
     pr = target_repo.create_pull(title=title, body=pr_body, head=head_branch, base=base_branch)
