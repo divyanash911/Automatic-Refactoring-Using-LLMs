@@ -165,7 +165,7 @@ def main():
         repo = get_repo()
         
         # Retrieve a list of .py files and randomly select 1–2 files for processing.
-        selected_files = pick_files(repo, branch="main", count=2)
+        selected_files = pick_files(repo, branch="master", count=2)
         if not selected_files:
             print("No eligible files found for refactoring.")
             return
