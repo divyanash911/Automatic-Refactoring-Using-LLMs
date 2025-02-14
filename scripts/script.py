@@ -43,7 +43,7 @@ def get_repo() -> object:
     Returns a PyGithub Repository object using the provided environment variables.
     """
     token = os.environ.get("TOKEN")
-    repo_name = os.environ.get("REPOSITORY")  # Format: owner/repo
+    repo_name = "SE-course-serc/project-1-team-14"
     if not token or not repo_name:
         raise Exception("TOKEN and REPOSITORY must be set as environment variables.")
     
