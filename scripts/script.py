@@ -36,7 +36,7 @@ def call_llm(prompt: str, role: str) -> str:
     
     response = chat_session.send_message(f"{role}: {prompt}")
     # Dummy response for demonstration purposes.
-    return response
+    return response.text
 
 def get_repo() -> object:
     """
