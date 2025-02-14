@@ -43,7 +43,7 @@ def get_repo() -> object:
     Returns a PyGithub Repository object using the provided environment variables.
     """
     token = os.environ.get("TOKEN")
-    repo_name = "SE-course-serc/project-1-team-14"
+    repo_name = "divyanash911/Automatic-Refactoring-Using-LLMs"
     if not token or not repo_name:
         raise Exception("TOKEN and REPOSITORY must be set as environment variables.")
     
@@ -58,7 +58,7 @@ def pick_files(repo, branch: str = "main", count: int = 2) -> list:
     filters for Python files, and randomly picks up to `count` files.
     """
     tree = repo.get_git_tree(branch, recursive=True).tree
-    py_files = [item.path for item in tree if item.type == "blob" and item.path.endswith(".py")]
+    py_files = [item.path for item in tree if item.type == "blob" and item.path.endswith(".java")]
     if not py_files:
         return []
     selected_files = random.sample(py_files, min(count, len(py_files)))
