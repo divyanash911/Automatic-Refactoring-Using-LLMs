@@ -49,6 +49,7 @@ def get_repo() -> object:
     
     g = Github(token)
     repo = g.get_repo(repo_name)
+    print(f"Connected to GitHub repository: {repo_name}")
     return repo
 
 def pick_files(repo, branch: str = "main", count: int = 2) -> list:
