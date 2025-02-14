@@ -107,7 +107,7 @@ def apply_refactorings_to_files(repo, files_updates: dict) -> str:
     ref_name = "refs/heads/" + branch_name
 
     # Get the latest commit sha from the main branch.
-    main_branch = repo.get_branch("main")
+    main_branch = repo.get_branch("master")
     base_sha = main_branch.commit.sha
 
     print(f"Creating new branch '{branch_name}' from 'main'...")
@@ -175,7 +175,7 @@ def main():
         files_refactored = {}
         for file_path in selected_files:
             print(f"\nProcessing file: {file_path}")
-            design_smells, refactored_code = refactor_file(repo, file_path, branch="main")
+            design_smells, refactored_code = refactor_file(repo, file_path, branch="master")
             files_design_smells[file_path] = design_smells
             files_refactored[file_path] = refactored_code
         
