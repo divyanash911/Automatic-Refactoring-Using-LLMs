@@ -57,6 +57,9 @@ def pick_files(repo, branch: str = "main", count: int = 2) -> list:
     Retrieves the repository's file tree (recursively) from the specified branch,
     filters for Python files, and randomly picks up to `count` files.
     """
+    if branch is None:
+        branch = repo.default_branch  # Use the default branch if none is provided
+    
     tree = repo.get_git_tree(branch, recursive=True).tree
     py_files = [item.path for item in tree if item.type == "blob" and item.path.endswith(".java")]
     if not py_files:
