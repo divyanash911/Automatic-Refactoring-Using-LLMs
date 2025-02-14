@@ -4,28 +4,12 @@ import random
 import datetime
 from github import Github
 import os
-import google.generativeai as genai
+from openai import OpenAI
 
-genai.configure(api_key=os.environ["GOOGLE_KEY"])
-
-# Create the model
-generation_config = {
-  "temperature": 1,
-  "top_p": 0.95,
-  "top_k": 40,
-  "max_output_tokens": 8192,
-  "response_mime_type": "text/plain",
-}
-
-model = genai.GenerativeModel(
-  model_name="gemini-2.0-flash",
-  generation_config=generation_config,
+client = OpenAI(
+  api_key=os.environ.get("OPENAI_KEY")
 )
 
-chat_session = model.start_chat(
-  history=[
-  ]
-)
 
 def call_llm(prompt: str, role: str) -> str:
     """
@@ -34,8 +18,14 @@ def call_llm(prompt: str, role: str) -> str:
     """
     print(f"[{role}] Prompt (first 100 chars): {prompt[:100]}...\n")
     
-    response = chat_session.send_message(f"{role}: {prompt}")
-    # Dummy response for demonstration purposes.
+    completion = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {"role": role, "content": prompt}
+        ]
+        )
+
+    response = completion.choices[0].message.content
     return response
 
 def get_repo() -> object:

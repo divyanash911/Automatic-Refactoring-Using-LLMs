@@ -10,6 +10,7 @@ jobs:
       GITHUB_TOKEN: ${{ secrets.TOKEN }}
       GITHUB_REPOSITORY: ${{ secrets.REPOSITORY }}
       GOOGLE_KEY: ${{ secrets.GOOGLE_KEY }}
+      OPENAI_KEY: ${{ secrets.OPENAI_KEY }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
