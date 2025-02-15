@@ -79,9 +79,16 @@ def refactor_file(repo, file_path: str, branch: str = "main") -> (str, str):
     original_code = content_file.decoded_content.decode('utf-8')
     
     prompt_design_smells = (
-        f"Analyze the following code for design smells and list any issues found:\n\n"
+        f"Analyze the following code for design smells and code quality metrics including:"
+        f"\n- Cyclomatic complexity"
+        f"\n- Lines of code"
+        f"\n- Method length"
+        f"\n- Class coupling"
+        f"\n- Number of parameters"
+        f"\n- Depth of inheritance"
+        f"\nList any issues found and provide recommendations for improvement:\n\n"
         f"{original_code}\n\n"
-        "Please provide a brief summary."
+        "Please provide a brief summary focusing on the most critical issues and metrics that exceed common thresholds."
     )
     design_smells = call_llm(prompt_design_smells, role="Design Smell Finder")
     
