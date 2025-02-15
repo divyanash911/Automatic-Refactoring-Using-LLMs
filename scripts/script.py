@@ -55,20 +55,36 @@ def get_repo() -> object:
 def pick_files(repo, branch: str = "main", count: int = 2) -> list:
     """
     Retrieves the repository's file tree (recursively) from the specified branch,
-    filters for Python files, and randomly picks up to `count` files.
+    filters for Python files, randomly selects a directory, and randomly picks up to `count` files.
     """
     if branch is None:
         branch = repo.default_branch  # Use the default branch if none is provided
     
     tree = repo.get_git_tree(branch, recursive=True).tree
-    py_files = [item.path for item in tree if item.type == "blob" and item.path.endswith(".java")]
-    if not py_files:
+    
+    # Group files by their parent directory
+    dir_files = {}
+    for item in tree:
+        if item.type == "blob" and item.path.endswith(".java"):
+            parent_dir = os.path.dirname(item.path)
+            if parent_dir not in dir_files:
+                dir_files[parent_dir] = []
+            dir_files[parent_dir].append(item.path)
+    
+    # Randomly select a directory that has files
+    if not dir_files:
         return []
-    selected_files = random.sample(py_files, min(count, len(py_files)))
-    print("Selected files for refactoring:")
+    target_dir = random.choice(list(dir_files.keys()))
+    
+    # Select random files from target directory
+    files_in_dir = dir_files[target_dir]
+    selected_files = random.sample(files_in_dir, min(count, len(files_in_dir)))
+    
+    print(f"Selected files from directory '{target_dir}':")
     for f in selected_files:
         print(" -", f)
     return selected_files
+
 
 def refactor_file(repo, file_path: str, branch: str = "main") -> (str, str):
     """
